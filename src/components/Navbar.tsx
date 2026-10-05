@@ -15,31 +15,39 @@ import {
     BreadcrumbSeparator,
 } from "./ui/breadcrumb"
 import { Button } from "./ui/button"
+import { SidebarTrigger } from "./ui/sidebar"
+
+const iconButton =
+    "size-[30px] shrink-0 rounded-[10px] bg-neutral-800 p-2 text-neutral-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25),inset_0_1px_0_0_rgba(161,161,161,0.25)] hover:bg-neutral-700 hover:text-neutral-200 [&_svg]:size-3.5"
 
 export default function Navbar() {
     return (
-        <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-neutral-950 bg-neutral-900 px-4 py-3.5 text-neutral-200 shadow-[0_1.2px_0_0_var(--color-neutral-800)]">
-            <Breadcrumb>
-                <BreadcrumbList className="gap-2 text-sm font-medium tracking-[-0.28px] text-neutral-500 sm:gap-2">
-                    <BreadcrumbItem>
-                        <BreadcrumbLink
-                            render={<a href="/operations" />}
-                            className="text-neutral-500 hover:text-neutral-200"
-                        >
-                            Operations
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator className="text-neutral-500">
-                        <CaretRightIcon size={14} weight="bold" />
-                    </BreadcrumbSeparator>
-                    <BreadcrumbItem>
-                        <BreadcrumbPage className="text-neutral-200">Overview</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+        <div className="flex h-[60px] shrink-0 items-center justify-between gap-3 border-b border-neutral-950 bg-neutral-900 px-4 py-3.5 text-neutral-200 shadow-[0_1.2px_0_0_var(--color-neutral-800)]">
+            <div className="flex min-w-0 items-center gap-3">
+                <SidebarTrigger className={`${iconButton} md:hidden`} />
 
-            <div className="flex w-[444px] items-center gap-2">
-                <label className="flex h-[30px] min-w-0 flex-1 items-center justify-between gap-2.5 rounded-[10px] border border-neutral-700 bg-neutral-800 px-2 focus-within:border-neutral-500">
+                <Breadcrumb className="min-w-0">
+                    <BreadcrumbList className="flex-nowrap gap-2 text-sm font-medium tracking-[-0.28px] text-neutral-500 sm:gap-2">
+                        <BreadcrumbItem className="hidden md:inline-flex">
+                            <BreadcrumbLink
+                                render={<a href="/operations" />}
+                                className="text-neutral-500 hover:text-neutral-200"
+                            >
+                                Operations
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator className="hidden text-neutral-500 md:block">
+                            <CaretRightIcon size={14} weight="bold" />
+                        </BreadcrumbSeparator>
+                        <BreadcrumbItem>
+                            <BreadcrumbPage className="truncate text-neutral-200">Overview</BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-2 lg:w-[444px]">
+                <label className="hidden h-[30px] min-w-0 flex-1 items-center justify-between gap-2.5 rounded-[10px] border border-neutral-700 bg-neutral-800 px-2 focus-within:border-neutral-500 lg:flex">
                     <div className="flex min-w-0 flex-1 items-center gap-2.5">
                         <MagnifyingGlassIcon size={14} weight="bold" className="shrink-0 text-neutral-400" />
                         <input
@@ -58,17 +66,26 @@ export default function Navbar() {
                     <Button
                         variant="ghost"
                         size="icon"
+                        aria-label="Search"
+                        className={`${iconButton} lg:hidden`}
+                    >
+                        <MagnifyingGlassIcon size={14} weight="bold" />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
                         aria-label="Notifications"
-                        className="size-[30px] shrink-0 rounded-[10px] bg-neutral-800 p-2 text-neutral-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25),inset_0_1px_0_0_rgba(161,161,161,0.25)] hover:bg-neutral-700 hover:text-neutral-200 [&_svg]:size-3.5"
+                        className={iconButton}
                     >
                         <BellIcon size={14} weight="bold" />
                     </Button>
                     <button
                         type="button"
-                        className="flex h-[30px] items-center gap-1 rounded-[10px] bg-linear-to-b from-purple-500 to-purple-700 p-2 text-sm font-medium tracking-[-0.28px] text-neutral-200 shadow-[0_0_0_1px_var(--color-purple-700),inset_0_1px_0_0_rgba(233,212,255,0.35)] hover:brightness-110 cursor-pointer"
+                        aria-label="Deploy New Agent"
+                        className="flex h-[30px] min-w-[30px] items-center justify-center gap-1 rounded-[10px] bg-linear-to-b from-purple-500 to-purple-700 p-2 text-sm font-medium tracking-[-0.28px] text-neutral-200 shadow-[0_0_0_1px_var(--color-purple-700),inset_0_1px_0_0_rgba(233,212,255,0.35)] hover:brightness-110"
                     >
                         <PlusIcon size={14} weight="bold" />
-                        Deploy New Agent
+                        <span className="hidden whitespace-nowrap sm:inline">Deploy New Agent</span>
                     </button>
                 </div>
             </div>

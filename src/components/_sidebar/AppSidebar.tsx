@@ -10,6 +10,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarTrigger,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import {
     ClockCounterClockwiseIcon,
@@ -49,73 +50,83 @@ const itemActive =
     "bg-neutral-800 text-neutral-200 shadow-[0_4px_4px_0_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.25),inset_0_0.8px_0_0_rgba(161,161,161,0.18)] hover:bg-neutral-800 hover:text-neutral-200"
 
 export function AppSidebar() {
+    const { isMobile, setOpenMobile } = useSidebar()
+
+    const closeOnMobile = () => {
+        if (isMobile) setOpenMobile(false)
+    }
+
     return (
         <Sidebar
             collapsible="icon"
-            className="border-neutral-950 text-neutral-200 shadow-[1px_0_0_0_var(--color-neutral-800)] [--sidebar:var(--color-neutral-900)] [--sidebar-foreground:var(--color-neutral-200)]"
+            className="border-neutral-950 shadow-[1px_0_0_0_var(--color-neutral-800)]"
         >
-            <SidebarHeader
-                className="group/header h-[60px] shrink-0 flex-row items-center justify-between border-b border-neutral-950 px-3.5 py-0 shadow-[0_1.2px_0_0_var(--color-neutral-800)]
-                           group-data-[collapsible=icon]:justify-center
-                           group-data-[collapsible=icon]:gap-0
-                           group-data-[collapsible=icon]:px-2"
-            >
-                <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-hover/header:hidden">
-                    <Image
-                        src="/logo.svg"
-                        alt="Synapse Logo"
-                        width={30}
-                        height={30}
-                        className="shrink-0"
+            <div className="flex h-full min-h-0 w-full flex-col bg-neutral-900 text-neutral-200">
+                <SidebarHeader
+                    className="group/header h-[60px] shrink-0 flex-row items-center justify-between border-b border-neutral-950 px-3.5 py-0 shadow-[0_1.2px_0_0_var(--color-neutral-800)]
+                               group-data-[collapsible=icon]:justify-center
+                               group-data-[collapsible=icon]:gap-0
+                               group-data-[collapsible=icon]:px-2"
+                >
+                    <div className="flex items-center gap-2 group-data-[collapsible=icon]:group-hover/header:hidden">
+                        <Image
+                            src="/logo.svg"
+                            alt="Synapse Logo"
+                            width={30}
+                            height={30}
+                            className="shrink-0"
+                        />
+                        <span className="whitespace-nowrap text-base font-semibold tracking-[-0.32px] text-neutral-200 group-data-[collapsible=icon]:hidden">
+                            Synapse OS
+                        </span>
+                    </div>
+
+                    <SidebarTrigger
+                        className="size-[30px] shrink-0 rounded-[10px] bg-neutral-800 p-2 text-neutral-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25),inset_0_1px_0_0_rgba(161,161,161,0.25)] hover:bg-neutral-700 hover:text-neutral-200 [&_svg]:size-3.5
+                                   group-data-[collapsible=icon]:hidden
+                                   group-data-[collapsible=icon]:group-hover/header:inline-flex!"
                     />
-                    <span className="whitespace-nowrap text-base font-semibold tracking-[-0.32px] text-neutral-200 group-data-[collapsible=icon]:hidden">
-                        Synapse OS
-                    </span>
-                </div>
+                </SidebarHeader>
 
-                <SidebarTrigger
-                    className="size-[30px] shrink-0 rounded-[10px] bg-neutral-800 p-2 text-neutral-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25),inset_0_1px_0_0_rgba(161,161,161,0.25)] hover:bg-neutral-700 hover:text-neutral-200 [&_svg]:size-3.5
-                               group-data-[collapsible=icon]:hidden
-                               group-data-[collapsible=icon]:group-hover/header:inline-flex!"
-                />
-            </SidebarHeader>
+                <SidebarContent className="p-3.5 group-data-[collapsible=icon]:p-2">
+                    <SidebarGroup className="p-0">
+                        <SidebarGroupContent>
+                            <SidebarMenu className="gap-1">
+                                {mainItems.map(({ label, icon: Icon, active }) => (
+                                    <SidebarMenuItem key={label}>
+                                        <SidebarMenuButton
+                                            tooltip={label}
+                                            onClick={closeOnMobile}
+                                            aria-current={active ? "page" : undefined}
+                                            className={`${itemBase} ${active ? itemActive : itemInactive}`}
+                                        >
+                                            <Icon size={14} weight="bold" />
+                                            <span>{label}</span>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                </SidebarContent>
 
-            <SidebarContent className="p-3.5 group-data-[collapsible=icon]:p-2">
-                <SidebarGroup className="p-0">
-                    <SidebarGroupContent>
-                        <SidebarMenu className="gap-1">
-                            {mainItems.map(({ label, icon: Icon, active }) => (
-                                <SidebarMenuItem key={label}>
-                                    <SidebarMenuButton
-                                        tooltip={label}
-                                        aria-current={active ? "page" : undefined}
-                                        className={`${itemBase} ${active ? itemActive : itemInactive}`}
-                                    >
-                                        <Icon size={14} weight="bold" />
-                                        <span>{label}</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
-
-            <SidebarFooter className="border-t border-neutral-800 p-3.5 shadow-[0_-1.2px_0_0_var(--color-neutral-950)] group-data-[collapsible=icon]:p-2">
-                <SidebarMenu className="gap-1">
-                    {footerItems.map(({ label, icon: Icon }) => (
-                        <SidebarMenuItem key={label}>
-                            <SidebarMenuButton
-                                tooltip={label}
-                                className={`${itemBase} ${itemInactive}`}
-                            >
-                                <Icon size={14} weight="bold" />
-                                <span>{label}</span>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-            </SidebarFooter>
+                <SidebarFooter className="border-t border-neutral-800 p-3.5 shadow-[0_-1.2px_0_0_var(--color-neutral-950)] group-data-[collapsible=icon]:p-2">
+                    <SidebarMenu className="gap-1">
+                        {footerItems.map(({ label, icon: Icon }) => (
+                            <SidebarMenuItem key={label}>
+                                <SidebarMenuButton
+                                    tooltip={label}
+                                    onClick={closeOnMobile}
+                                    className={`${itemBase} ${itemInactive}`}
+                                >
+                                    <Icon size={14} weight="bold" />
+                                    <span>{label}</span>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        ))}
+                    </SidebarMenu>
+                </SidebarFooter>
+            </div>
         </Sidebar>
     )
 }
