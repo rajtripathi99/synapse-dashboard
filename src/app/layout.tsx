@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/_sidebar/AppSidebar";
 import Navbar from "@/components/Navbar";
 
@@ -27,10 +28,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`dark ${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="antialiased">
-        <SidebarProvider>
+      <body className="font-sans antialiased">
+        <SidebarProvider
+          style={
+            {
+              "--sidebar-width": "260px",
+              "--sidebar-width-mobile": "260px",
+            } as CSSProperties
+          }
+        >
           <AppSidebar />
-          <main className="flex min-h-svh w-full flex-col">
+          <main className="flex min-h-svh w-full min-w-0 flex-col bg-neutral-900">
             <Navbar />
             {children}
           </main>
